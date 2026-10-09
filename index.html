@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Trash Panda Core</title>
+<title>Trash Panda Core — живая мусорка</title>
 <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Special+Elite&family=Caveat:wght@700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -10,28 +10,25 @@
     --mask-black:#14110d; --mask-cream:#e8dcc0;
     --bin-silver:#b8b8b3; --bin-shadow:#6d6d68;
     --rust:#8b4a2b; --tape-yellow:#e8b923; --sticker-red:#c4482b;
+    --goo-green:#6b7a3f;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
     font-family:'Special Elite', monospace;
-    background:#1a1714;
-    color:var(--mask-cream);
+    background:#1a1714; color:var(--mask-cream);
     background-image:
       radial-gradient(circle at 20% 30%, rgba(139,74,43,.15) 0 40px, transparent 41px),
       radial-gradient(circle at 80% 70%, rgba(139,74,43,.12) 0 60px, transparent 61px),
       repeating-linear-gradient(45deg, rgba(0,0,0,.05) 0 2px, transparent 2px 4px);
+    min-height:100vh;
   }
 
-  /* === HEADER — крышка бака === */
+  /* HEADER */
   header{
-    position:relative;
-    padding:40px 24px 60px;
-    background:
-      repeating-linear-gradient(90deg,
-        var(--bin-silver) 0 8px,
-        #d8d8d3 8px 10px,
-        var(--bin-shadow) 10px 18px,
-        var(--bin-silver) 18px 26px);
+    position:relative; padding:40px 24px 60px;
+    background:repeating-linear-gradient(90deg,
+      var(--bin-silver) 0 8px, #d8d8d3 8px 10px,
+      var(--bin-shadow) 10px 18px, var(--bin-silver) 18px 26px);
     box-shadow:inset 0 -12px 24px rgba(0,0,0,.35), 0 8px 0 #4a4038;
     border-bottom:6px solid var(--fur-dark);
   }
@@ -40,10 +37,8 @@
     font-size:clamp(2rem,6vw,4.5rem);
     color:var(--mask-black);
     text-shadow:2px 2px 0 #fff5, 4px 4px 0 var(--rust);
-    transform:rotate(-2deg);
-    display:inline-block;
-    background:var(--tape-yellow);
-    padding:8px 24px;
+    transform:rotate(-2deg); display:inline-block;
+    background:var(--tape-yellow); padding:8px 24px;
     box-shadow:0 4px 0 #0006;
   }
   header p{
@@ -52,32 +47,52 @@
     padding:6px 14px; transform:rotate(1deg);
     border:2px dashed var(--fur-mid);
   }
+  .counter{
+    position:absolute; top:20px; right:24px;
+    background:var(--mask-black); color:var(--tape-yellow);
+    padding:10px 16px; border:3px solid var(--rust);
+    font-family:'Permanent Marker'; font-size:1.1rem;
+    transform:rotate(3deg);
+    box-shadow:4px 4px 0 #000;
+  }
+  .counter .num{
+    color:#fff; font-size:1.4rem;
+    display:inline-block; min-width:2ch; text-align:center;
+    transition:transform .2s;
+  }
+  .counter .num.bump{transform:scale(1.6) rotate(-8deg); color:var(--tape-yellow)}
 
-  /* === NAV — бирки === */
+  /* NAV TABS */
   nav{
     display:flex; gap:14px; padding:20px; flex-wrap:wrap;
     background:#221e1a; border-bottom:3px dashed var(--rust);
   }
-  nav a{
+  nav button{
     position:relative;
     padding:10px 22px;
     background:linear-gradient(180deg,#cfcfca,#9a9a95);
     color:var(--mask-black);
-    font-weight:bold; text-decoration:none;
+    font-family:inherit; font-size:1rem; font-weight:bold;
     border:2px solid #3a3530;
+    cursor:pointer;
     transform:rotate(-1deg);
     transition:.15s;
     box-shadow:0 3px 0 #0008;
   }
-  nav a::before, nav a::after{
+  nav button::before, nav button::after{
     content:''; position:absolute; width:6px; height:6px;
     background:radial-gradient(circle,#555,#222);
     border-radius:50%; top:50%; transform:translateY(-50%);
   }
-  nav a::before{left:6px} nav a::after{right:6px}
-  nav a:hover{transform:rotate(1deg) translateY(-2px); background:var(--tape-yellow)}
+  nav button::before{left:6px} nav button::after{right:6px}
+  nav button:hover{transform:rotate(1deg) translateY(-2px); background:var(--tape-yellow)}
+  nav button.active{
+    background:var(--tape-yellow); color:var(--mask-black);
+    transform:rotate(0) translateY(-2px);
+    box-shadow:0 5px 0 #0008, inset 0 0 0 2px #000;
+  }
 
-  /* === HERO === */
+  /* HERO */
   .hero{
     padding:60px 24px; text-align:center; position:relative;
     background:linear-gradient(180deg,#2b2620,#1a1714);
@@ -88,23 +103,57 @@
     font-size:clamp(2.5rem,8vw,6rem);
     color:var(--tape-yellow);
     text-shadow:4px 4px 0 var(--mask-black), 8px 8px 0 var(--rust);
-    letter-spacing:2px;
-    line-height:1;
+    letter-spacing:2px; line-height:1;
   }
   .hero .raccoon{
     font-size:clamp(6rem,18vw,14rem);
-    line-height:1;
-    margin:20px 0;
+    line-height:1; margin:20px 0;
     filter:drop-shadow(4px 6px 0 #0008);
     animation:wiggle 3s ease-in-out infinite;
+    cursor:pointer; user-select:none;
+    display:inline-block;
+    transition:transform .1s;
   }
-  @keyframes wiggle{
-    0%,100%{transform:rotate(-3deg)}
-    50%{transform:rotate(3deg)}
+  .hero .raccoon:active{transform:scale(.9)}
+  .hero .raccoon.happy{animation:jump .5s ease}
+  @keyframes wiggle{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+  @keyframes jump{
+    0%{transform:translateY(0) rotate(0)}
+    40%{transform:translateY(-30px) rotate(-10deg)}
+    70%{transform:translateY(-10px) rotate(8deg)}
+    100%{transform:translateY(0) rotate(0)}
+  }
+  .speech{
+    font-family:'Caveat'; font-size:1.6rem; color:var(--tape-yellow);
+    min-height:2rem; margin-top:8px;
+    transition:opacity .3s;
   }
 
-  /* === CARDS === */
-  section.cards{
+  /* DIG BUTTON */
+  .dig-btn{
+    margin-top:24px;
+    font-family:'Permanent Marker'; font-size:1.3rem;
+    padding:16px 36px;
+    background:var(--rust); color:var(--mask-cream);
+    border:4px solid var(--mask-black);
+    cursor:pointer;
+    box-shadow:6px 6px 0 var(--mask-black);
+    transform:rotate(-1deg);
+    transition:.1s;
+    text-transform:uppercase; letter-spacing:2px;
+  }
+  .dig-btn:hover{background:#a55a35; transform:rotate(1deg) translateY(-2px)}
+  .dig-btn:active{transform:translate(4px,4px); box-shadow:2px 2px 0 var(--mask-black)}
+
+  /* PANELS */
+  .panel{display:none; animation:fadeIn .35s ease}
+  .panel.active{display:block}
+  @keyframes fadeIn{
+    from{opacity:0; transform:translateY(12px)}
+    to{opacity:1; transform:translateY(0)}
+  }
+
+  .cards{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
     gap:24px; padding:48px 24px;
@@ -114,19 +163,16 @@
   }
   .card{
     position:relative;
-    background:var(--mask-cream);
-    color:var(--mask-black);
+    background:var(--mask-cream); color:var(--mask-black);
     padding:24px 20px;
     border:3px solid var(--fur-dark);
     transform:rotate(-1.5deg);
     box-shadow:8px 8px 0 var(--fur-dark), 12px 12px 0 var(--rust);
     clip-path:polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    animation:popIn .4s ease backwards;
   }
   .card:nth-child(even){transform:rotate(1.2deg)}
-  .card h3{
-    font-family:'Permanent Marker';
-    color:var(--rust); margin-bottom:8px;
-  }
+  .card h3{font-family:'Permanent Marker'; color:var(--rust); margin-bottom:8px}
   .card .sticker{
     position:absolute; top:-12px; right:-8px;
     background:var(--sticker-red); color:#fff;
@@ -135,18 +181,17 @@
     box-shadow:2px 2px 0 #000;
     border-radius:3px;
   }
-  .card::after{
-    content:''; position:absolute; bottom:8px; right:10px;
-    width:40px; height:20px; opacity:.15;
-    background:radial-gradient(ellipse,#000 20%,transparent 70%);
+  .card.new{animation:popIn .5s cubic-bezier(.2,1.6,.5,1)}
+  @keyframes popIn{
+    from{opacity:0; transform:scale(.5) rotate(-15deg)}
+    to{opacity:1}
   }
 
-  /* === TAIL DIVIDER === */
+  /* TAIL */
   .tail{
     height:60px;
     background:repeating-linear-gradient(45deg,
-      var(--fur-dark) 0 30px,
-      var(--mask-cream) 30px 60px);
+      var(--fur-dark) 0 30px, var(--mask-cream) 30px 60px);
     border-top:4px solid #000; border-bottom:4px solid #000;
     position:relative;
   }
@@ -154,24 +199,50 @@
     content:'— полосатый хвост —';
     position:absolute; inset:0;
     display:flex; align-items:center; justify-content:center;
-    font-family:'Caveat'; font-size:1.5rem;
-    color:var(--tape-yellow);
+    font-family:'Caveat'; font-size:1.5rem; color:var(--tape-yellow);
     text-shadow:1px 1px 0 #000, 2px 2px 0 #000;
   }
 
-  /* === FOOTER === */
+  /* FOOTER */
   footer{
-    background:
-      repeating-linear-gradient(90deg,
-        #3a322a 0 6px, #2b2620 6px 12px);
-    padding:40px 24px;
-    text-align:center;
+    background:repeating-linear-gradient(90deg, #3a322a 0 6px, #2b2620 6px 12px);
+    padding:40px 24px; text-align:center;
     color:var(--mask-cream);
     border-top:6px solid var(--rust);
-    font-family:'Caveat', cursive;
-    font-size:1.3rem;
+    font-family:'Caveat', cursive; font-size:1.3rem;
   }
   footer .bin-row{font-size:2rem; margin-bottom:12px; letter-spacing:8px}
+
+  /* TOAST */
+  #toasts{
+    position:fixed; bottom:20px; right:20px;
+    display:flex; flex-direction:column; gap:10px;
+    z-index:999; pointer-events:none;
+  }
+  .toast{
+    background:var(--mask-black); color:var(--tape-yellow);
+    border:3px solid var(--rust);
+    padding:12px 20px;
+    font-family:'Permanent Marker'; font-size:1rem;
+    box-shadow:4px 4px 0 #0008;
+    transform:translateX(120%) rotate(2deg);
+    animation:slideIn .35s ease forwards;
+    max-width:320px;
+  }
+  .toast.out{animation:slideOut .3s ease forwards}
+  @keyframes slideIn{to{transform:translateX(0) rotate(-2deg)}}
+  @keyframes slideOut{to{transform:translateX(120%) rotate(4deg); opacity:0}}
+
+  /* стикеры-наклейки на фоне — для живости */
+  .bg-sticker{
+    position:fixed; pointer-events:none;
+    font-size:2rem; opacity:.06; z-index:0;
+    animation:float 12s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{transform:translate(0,0) rotate(0)}
+    50%{transform:translate(20px,-30px) rotate(15deg)}
+  }
 </style>
 </head>
 <body>
@@ -179,28 +250,64 @@
 <header>
   <h1>🗑 МУСОРКА №5</h1>
   <p>официальный сайт енота, роющегося в баках с 2019 года</p>
+  <div class="counter">
+    найдено: <span class="num" id="counter">0</span> шт.
+  </div>
 </header>
 
 <nav>
-  <a href="#">ХЛАМ</a>
-  <a href="#">БЛЕСТЯШКИ</a>
-  <a href="#">ОГРЫЗКИ</a>
-  <a href="#">КОНТАКТ</a>
+  <button data-tab="hl" class="active">ХЛАМ</button>
+  <button data-tab="bl">БЛЕСТЯШКИ</button>
+  <button data-tab="og">ОГРЫЗКИ</button>
+  <button data-tab="ct">КОНТАКТ</button>
 </nav>
 
 <section class="hero">
   <h2>ЗДЕСЬ ЖИВЁТ<br>ХЛАМ</h2>
-  <div class="raccoon">🦝</div>
-  <p style="font-family:'Caveat';font-size:1.6rem;color:var(--tape-yellow)">
-    «Всё блестящее — моё. Всё не блестящее — тоже моё.»
-  </p>
+  <div class="raccoon" id="raccoon">🦝</div>
+  <p class="speech" id="speech">«Всё блестящее — моё. Всё не блестящее — тоже моё.»</p>
+  <br>
+  <button class="dig-btn" id="digBtn">🕳 Покопаться в баке</button>
 </section>
 
-<section class="cards">
+<!-- ПАНЕЛЬ 1: ХЛАМ -->
+<section class="panel active cards" id="tab-hl">
   <div class="card"><span class="sticker">СВЕЖЕЕ</span><h3>Огрызок яблока</h3><p>Найден у бака №3. Слегка надкушен. Требует проверки.</p></div>
   <div class="card"><span class="sticker">ТОП</span><h3>Фольга от шоколада</h3><p>Блестит. Шуршит. Идеально для коллекции.</p></div>
   <div class="card"><span class="sticker">ХИТ</span><h3>Кусок пиццы</h3><p>Пепперони, четверг. Ещё тёплый. Никому не говорите.</p></div>
   <div class="card"><span class="sticker">НОВОЕ</span><h3>Одна перчатка</h3><p>Левая. Правую ищем с прошлой зимы.</p></div>
+</section>
+
+<!-- ПАНЕЛЬ 2: БЛЕСТЯШКИ -->
+<section class="panel cards" id="tab-bl">
+  <div class="card"><span class="sticker">ОГО!</span><h3>Крышка от банки</h3><p>Серебристая. Зубчатая по краю. Приятно крутить в лапах.</p></div>
+  <div class="card"><span class="sticker">ЛЮКС</span><h3>Разбитая ёлочная игрушка</h3><p>Осколки блестят. Немного колется, но красиво.</p></div>
+  <div class="card"><span class="sticker">РЕДКОЕ</span><h3>Монетка 10 копеек</h3><p>1998 год. Потёртая. Пахнет историей и ржавчиной.</p></div>
+  <div class="card"><span class="sticker">ВАУ</span><h3>Кусок витринного стекла</h3><p>Радужный. Енот смотрит в него и видит себя красивым.</p></div>
+</section>
+
+<!-- ПАНЕЛЬ 3: ОГРЫЗКИ -->
+<section class="panel cards" id="tab-og">
+  <div class="card"><span class="sticker">МММ</span><h3>Корочка хлеба</h3><p>Чёрствая. Но с маслом не разобрать.</p></div>
+  <div class="card"><span class="sticker">ФУ</span><h3>Огуречный хвостик</h3><p>Никто не любит, а енот съел. Енот не привередлив.</p></div>
+  <div class="card"><span class="sticker">ТОП</span><h3>Куриная косточка</h3><p>Обглодана почти до блеска. Работа мастера.</p></div>
+  <div class="card"><span class="sticker">ХМ</span><h3>Недоеденный пончик</h3><p>С глазурью. Судьба улыбнулась.</p></div>
+</section>
+
+<!-- ПАНЕЛЬ 4: КОНТАКТ -->
+<section class="panel cards" id="tab-ct">
+  <div class="card" style="grid-column:1/-1; max-width:600px; margin:0 auto;">
+    <h3>📮 Как связаться с енотом</h3>
+    <p style="margin:12px 0; line-height:1.7;">
+      Оставить записку под баком №5.<br>
+      Принести что-нибудь блестящее.<br>
+      Просто пошуметь в 3 часа ночи.<br>
+      Енот придёт сам.
+    </p>
+    <p style="font-family:'Caveat'; font-size:1.3rem; color:var(--rust);">
+      P.S. Енот не читает почту. Енот читает запахи.
+    </p>
+  </div>
 </section>
 
 <div class="tail"></div>
@@ -210,5 +317,171 @@
   © Мусорка №5. Всё найденное — наше. Не трогать.
 </footer>
 
+<div id="toasts"></div>
+
+<script>
+/* ========== 1. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ========== */
+const tabButtons = document.querySelectorAll('nav button');
+const panels = document.querySelectorAll('.panel');
+
+tabButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.tab;
+
+    tabButtons.forEach(b => b.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+
+    btn.classList.add('active');
+    document.getElementById('tab-' + target).classList.add('active');
+
+    // счётчик при клике
+    bumpCounter();
+    toast('Переключились на «' + btn.textContent.trim() + '»');
+  });
+});
+
+/* ========== 2. РЕАКЦИИ ЕНОТА ========== */
+const raccoon = document.getElementById('raccoon');
+const speech  = document.getElementById('speech');
+
+const reactions = [
+  { face:'🦝', text:'«Это моё. И это моё. И вот то — тоже.»' },
+  { face:'😻', text:'«Блестяшка!! Блестяшка!!!»' },
+  { face:'🤤', text:'«Пахнет пиццей... где-то рядом...»' },
+  { face:'😤', text:'«Не трогай мою кучу!»' },
+  { face:'🤫', text:'«Тс-с-с... тут рядом люди.»' },
+  { face:'😎', text:'«Профессионал за работой. Не отвлекай.»' },
+  { face:'🥴', text:'«Съел что-то. Надеюсь, это было съедобно.»' },
+  { face:'😴', text:'«Енот устал. Енот поспит в баке.»' }
+];
+
+raccoon.addEventListener('click', () => {
+  const r = reactions[Math.floor(Math.random() * reactions.length)];
+  raccoon.textContent = r.face;
+  speech.style.opacity = '0';
+  setTimeout(() => {
+    speech.textContent = r.text;
+    speech.style.opacity = '1';
+  }, 120);
+
+  raccoon.classList.remove('happy');
+  void raccoon.offsetWidth; // рестарт анимации
+  raccoon.classList.add('happy');
+
+  // возвращаем енота в норм. вид
+  setTimeout(() => { raccoon.textContent = '🦝'; }, 1200);
+
+  bumpCounter();
+  toast('Енот реагирует!');
+});
+
+/* ========== 3. ГЕНЕРАТОР НАХОДОК ========== */
+const findings = [
+  { name:'Ржавая консервная банка', desc:'Помятая. Кто-то пытался открыть зубами.', tag:'ЖЕСТЬ',   emoji:'🥫' },
+  { name:'Огрызок банана',          desc:'Совсем свежий. Енот ещё думает.',      tag:'ЕДА',     emoji:'🍌' },
+  { name:'Кусок скотча',            desc:'Липкий. С ворсинками. Сойдёт.',        tag:'ИНВЕНТАРЬ',emoji:'🩹' },
+  { name:'Смятая бумажка',          desc:'Развернул — а там пусто. Опять.',       tag:'ХЛАМ',    emoji:'📄' },
+  { name:'Пластиковая крышка',      desc:'Синяя. Круглая. Отлично катится.',      tag:'СОКРОВИЩЕ',emoji:'🔵' },
+  { name:'Носок в горошек',         desc:'Один. Грязный. Пахнет приключениями.',  tag:'ОДЕЖДА',  emoji:'🧦' },
+  { name:'Батарейка AA',            desc:'Может ещё живая. Енот не проверяет.',   tag:'ТЕХНИКА', emoji:'🔋' },
+  { name:'Кусок сыра',              desc:'С плесенью. Значит — деликатес.',       tag:'ГУРМЭ',   emoji:'🧀' },
+  { name:'Обёртка от мороженого',   desc:'Пахнет ванилью и детством.',            tag:'ПАМЯТЬ',  emoji:'🍦' },
+  { name:'Болт и гайка',            desc:'Парные. Редкость в наши дни.',          tag:'МЕХАНИЗМ',emoji:'🔩' },
+  { name:'Старый ключ',             desc:'Ни от чего. Но красивый.',              tag:'ЗАГАДКА', emoji:'🔑' },
+  { name:'Перо птицы',              desc:'Голубиное. Енот считает трофеем.',      tag:'ТРОФЕЙ',  emoji:'🪶' },
+];
+
+const tagColors = {
+  'ЖЕСТЬ':'#8b4a2b', 'ЕДА':'#6b7a3f', 'ИНВЕНТАРЬ':'#4a4038',
+  'ХЛАМ':'#6d6d68', 'СОКРОВИЩЕ':'#e8b923', 'ОДЕЖДА':'#8a7a68',
+  'ТЕХНИКА':'#c4482b', 'ГУРМЭ':'#e8b923', 'ПАМЯТЬ':'#c4482b',
+  'МЕХАНИЗМ':'#6d6d68', 'ЗАГАДКА':'#4a4038', 'ТРОФЕЙ':'#6b7a3f'
+};
+
+const digBtn = document.getElementById('digBtn');
+let totalFound = 0;
+
+digBtn.addEventListener('click', () => {
+  const f = findings[Math.floor(Math.random() * findings.length)];
+  const card = document.createElement('div');
+  card.className = 'card new';
+  card.style.background = `linear-gradient(180deg, var(--mask-cream), #d4c8a8)`;
+  card.innerHTML = `
+    <span class="sticker" style="background:${tagColors[f.tag] || '#c4482b'}">${f.tag}</span>
+    <h3>${f.emoji} ${f.name}</h3>
+    <p>${f.desc}</p>
+  `;
+
+  // добавляем в активную панель
+  const activePanel = document.querySelector('.panel.active');
+  activePanel.appendChild(card);
+
+  // счётчик
+  totalFound++;
+  const counterEl = document.getElementById('counter');
+  counterEl.textContent = totalFound;
+  counterEl.classList.remove('bump');
+  void counterEl.offsetWidth;
+  counterEl.classList.add('bump');
+  setTimeout(() => counterEl.classList.remove('bump'), 200);
+
+  // случайный тост
+  const quips = ['Улов дня!', 'Енот доволен.', 'Это точно моё!', 'Никому не говори.', 'Пойдёт в коллекцию.'];
+  toast(quips[Math.floor(Math.random() * quips.length)]);
+
+  // енот радуется
+  raccoon.textContent = '😻';
+  raccoon.classList.remove('happy');
+  void raccoon.offsetWidth;
+  raccoon.classList.add('happy');
+  setTimeout(() => { raccoon.textContent = '🦝'; }, 1000);
+
+  // ограничиваем количество новых карточек
+  if (activePanel.querySelectorAll('.card.new').length > 4) {
+    activePanel.querySelector('.card.new').remove();
+  }
+});
+
+/* ========== 4. ТОСТЫ ========== */
+const toastBox = document.getElementById('toasts');
+function toast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = '🦝 ' + msg;
+  toastBox.appendChild(t);
+  setTimeout(() => {
+    t.classList.add('out');
+    setTimeout(() => t.remove(), 300);
+  }, 2200);
+
+  // не даём тостам копиться
+  while (toastBox.children.length > 4) toastBox.firstChild.remove();
+}
+
+/* ========== 5. ФОНОВЫЕ СТИКЕРЫ ========== */
+const bgEmojis = ['🥫','🍌','🧦','🔩','🩹','🍕','🔋','🥒','🧀','📄'];
+for (let i = 0; i < 8; i++) {
+  const s = document.createElement('div');
+  s.className = 'bg-sticker';
+  s.textContent = bgEmojis[Math.floor(Math.random() * bgEmojis.length)];
+  s.style.top = Math.random() * 90 + 'vh';
+  s.style.left = Math.random() * 90 + 'vw';
+  s.style.animationDelay = Math.random() * 5 + 's';
+  s.style.fontSize = (1.5 + Math.random() * 2) + 'rem';
+  document.body.appendChild(s);
+}
+
+/* ========== 6. СЧЁТЧИК ПРИ ПЕРЕКЛЮЧЕНИИ ========== */
+function bumpCounter() {
+  const c = document.getElementById('counter');
+  c.classList.remove('bump');
+  void c.offsetWidth;
+  c.classList.add('bump');
+  setTimeout(() => c.classList.remove('bump'), 200);
+}
+
+/* ========== 7. ПРИВЕТСТВИЕ ========== */
+setTimeout(() => toast('Добро пожаловать в мусорку №5!'), 800);
+</script>
 </body>
 </html>
