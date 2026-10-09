@@ -1,0 +1,164 @@
+:root{
+  --fur-dark:#2b2620; --fur-mid:#4a4038; --fur-light:#8a7a68;
+  --mask-black:#14110d; --mask-cream:#e8dcc0;
+  --bin-silver:#b8b8b3; --bin-shadow:#6d6d68;
+  --rust:#8b4a2b; --tape-yellow:#e8b923; --sticker-red:#c4482b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Special Elite', monospace;
+  background:#1a1714;
+  color:var(--mask-cream);
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(139,74,43,.15) 0 40px, transparent 41px),
+    radial-gradient(circle at 80% 70%, rgba(139,74,43,.12) 0 60px, transparent 61px),
+    repeating-linear-gradient(45deg, rgba(0,0,0,.05) 0 2px, transparent 2px 4px);
+  min-height:100vh;
+}
+header{
+  position:relative; padding:40px 24px 60px;
+  background: repeating-linear-gradient(90deg,
+    var(--bin-silver) 0 8px, #d8d8d3 8px 10px,
+    var(--bin-shadow) 10px 18px, var(--bin-silver) 18px 26px);
+  box-shadow:inset 0 -12px 24px rgba(0,0,0,.35), 0 8px 0 #4a4038;
+  border-bottom:6px solid var(--fur-dark);
+}
+header h1{
+  font-family:'Permanent Marker', cursive;
+  font-size:clamp(2rem,6vw,4.5rem);
+  color:var(--mask-black);
+  text-shadow:2px 2px 0 #fff5, 4px 4px 0 var(--rust);
+  transform:rotate(-2deg); display:inline-block;
+  background:var(--tape-yellow); padding:8px 24px;
+  box-shadow:0 4px 0 #0006;
+}
+header p{
+  margin-top:16px; font-size:1.1rem; color:#3a322a;
+  background:var(--mask-cream); display:inline-block;
+  padding:6px 14px; transform:rotate(1deg);
+  border:2px dashed var(--fur-mid);
+}
+nav{
+  display:flex; gap:14px; padding:20px; flex-wrap:wrap;
+  background:#221e1a; border-bottom:3px dashed var(--rust);
+}
+nav a{
+  position:relative; padding:10px 22px;
+  background:linear-gradient(180deg,#cfcfca,#9a9a95);
+  color:var(--mask-black); font-weight:bold; text-decoration:none;
+  border:2px solid #3a3530; transform:rotate(-1deg);
+  transition:.15s; box-shadow:0 3px 0 #0008; cursor:pointer;
+}
+nav a::before, nav a::after{
+  content:''; position:absolute; width:6px; height:6px;
+  background:radial-gradient(circle,#555,#222);
+  border-radius:50%; top:50%; transform:translateY(-50%);
+}
+nav a::before{left:6px} nav a::after{right:6px}
+nav a:hover, nav a.active{transform:rotate(1deg) translateY(-2px); background:var(--tape-yellow)}
+.hero{
+  padding:60px 24px 40px; text-align:center;
+  background:linear-gradient(180deg,#2b2620,#1a1714);
+  border-bottom:8px solid var(--fur-mid);
+}
+.hero h2{
+  font-family:'Permanent Marker';
+  font-size:clamp(2rem,7vw,4.5rem);
+  color:var(--tape-yellow);
+  text-shadow:4px 4px 0 var(--mask-black), 8px 8px 0 var(--rust);
+  letter-spacing:2px; line-height:1;
+}
+.hero .raccoon{
+  font-size:clamp(6rem,18vw,12rem); line-height:1; margin:20px 0;
+  filter:drop-shadow(4px 6px 0 #0008);
+  animation:wiggle 3s ease-in-out infinite;
+}
+@keyframes wiggle{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.hero #hero-info{font-family:'Caveat';font-size:1.6rem;color:var(--tape-yellow)}
+.space-bar{
+  max-width:500px; margin:20px auto 8px; height:22px;
+  background:rgba(0,0,0,.5); border:2px solid var(--mask-black);
+  box-shadow:3px 3px 0 #000; overflow:hidden;
+}
+.space-fill{
+  height:100%; width:0%;
+  background:repeating-linear-gradient(45deg,
+    var(--tape-yellow) 0 10px, var(--rust) 10px 20px);
+  transition:width .6s ease;
+}
+.space-label{font-family:'Caveat';font-size:1.2rem;color:var(--mask-cream);opacity:.85}
+main{padding:40px 24px; background:#1a1714; min-height:50vh}
+.panel{display:block; animation:fade .3s}
+.panel.hidden{display:none}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.panel h3{
+  font-family:'Permanent Marker'; color:var(--tape-yellow);
+  margin:24px 0 12px; font-size:1.4rem;
+  text-shadow:2px 2px 0 var(--mask-black);
+}
+.panel h3:first-child{margin-top:0}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:16px}
+.row input[type="text"], .row input[type="file"]{
+  background:var(--mask-cream); color:var(--mask-black);
+  border:2px solid var(--fur-dark); padding:10px 14px;
+  font-family:'Special Elite', monospace; font-size:1rem;
+  min-width:200px; flex:1; box-shadow:3px 3px 0 var(--fur-dark);
+}
+.row input[type="text"]:focus{outline:none;border-color:var(--rust);box-shadow:3px 3px 0 var(--rust)}
+.row label{display:flex;align-items:center;gap:6px;font-size:.95rem;cursor:pointer}
+button{
+  background:linear-gradient(180deg,#cfcfca,#9a9a95);
+  color:var(--mask-black); border:2px solid #3a3530;
+  padding:10px 20px; font-family:'Special Elite', monospace;
+  font-weight:bold; cursor:pointer; box-shadow:3px 3px 0 var(--fur-dark);
+  transition:.15s; text-transform:uppercase; letter-spacing:1px;
+}
+button:hover{background:var(--tape-yellow); transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--fur-dark)}
+button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--fur-dark)}
+button.danger{background:linear-gradient(180deg,#d96850,var(--sticker-red));color:#fff}
+.file-list{
+  list-style:none; background:rgba(232,220,192,.05);
+  border:2px dashed var(--fur-mid); padding:12px;
+  max-height:400px; overflow-y:auto;
+}
+.file-list li{
+  display:flex; gap:12px; align-items:center;
+  padding:8px 12px; border-bottom:1px dashed rgba(232,185,35,.15);
+}
+.file-list li:hover{background:rgba(232,185,35,.08)}
+.file-list .icon{font-size:1.3rem}
+.file-list .name{flex:1; word-break:break-all}
+.file-list .meta{color:var(--fur-light);font-size:.9rem}
+.file-list .actions{display:flex;gap:8px}
+.file-list .actions a{color:var(--tape-yellow);text-decoration:none;font-size:1.2rem}
+.file-list .empty{color:var(--fur-light);text-align:center;padding:20px}
+.file-list a[target]{color:var(--tape-yellow);text-decoration:underline}
+.log{
+  margin-top:32px; background:rgba(0,0,0,.35);
+  border:2px solid var(--fur-dark); padding:12px 16px;
+  font-size:.9rem; max-height:220px; overflow-y:auto;
+  font-family:'Special Elite', monospace;
+}
+.log:empty::before{content:'— журнал пуст —';color:var(--fur-light);font-style:italic}
+.log-line{padding:3px 0;border-bottom:1px dotted rgba(232,185,35,.1)}
+.log-line.log-error{color:#ff8a6b}
+.tail{
+  height:60px;
+  background:repeating-linear-gradient(45deg,
+    var(--fur-dark) 0 30px, var(--mask-cream) 30px 60px);
+  border-top:4px solid #000; border-bottom:4px solid #000; position:relative;
+}
+.tail::after{
+  content:'— полосатый хвост —'; position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Caveat'; font-size:1.5rem; color:var(--tape-yellow);
+  text-shadow:1px 1px 0 #000, 2px 2px 0 #000;
+}
+footer{
+  background:repeating-linear-gradient(90deg,#3a322a 0 6px,#2b2620 6px 12px);
+  padding:40px 24px; text-align:center; color:var(--mask-cream);
+  border-top:6px solid var(--rust);
+  font-family:'Caveat', cursive; font-size:1.3rem;
+}
+footer .bin-row{font-size:2rem;margin-bottom:12px;letter-spacing:8px}
+@media (max-width:600px){.row input[type="text"]{min-width:100%}}
